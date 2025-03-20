@@ -40,7 +40,7 @@ namespace Grammophone.Queueing.Tests
 			await this.Client.SendMessageAsync(message);
 
 			// Assert
-			var receivedMessage = await this.Client.TryReceiveMessage();
+			var receivedMessage = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(receivedMessage, "Message should be received.");
 
@@ -53,7 +53,7 @@ namespace Grammophone.Queueing.Tests
 		public async Task TryReceiveMessage_QueueEmpty_ReturnsNull()
 		{
 			// Act
-			var message = await this.Client.TryReceiveMessage();
+			var message = await this.Client.TryReceiveMessageAsync();
 
 			// Assert
 			Assert.IsNull(message, "Should return null when queue is empty.");
@@ -66,7 +66,7 @@ namespace Grammophone.Queueing.Tests
 			await this.Client.SendMessageAsync("Commit test");
 
 			// Act
-			var message = await this.Client.TryReceiveMessage();
+			var message = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(message, "A message should have been found in the queue.");
 
@@ -75,7 +75,7 @@ namespace Grammophone.Queueing.Tests
 			// Assert
 			Assert.IsTrue(committed, "Commit should succeed.");
 
-			var nextMessage = await this.Client.TryReceiveMessage();
+			var nextMessage = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNull(nextMessage, "Queue should be empty after commit.");
 		}
@@ -87,7 +87,7 @@ namespace Grammophone.Queueing.Tests
 			await this.Client.SendMessageAsync("Abandon test");
 
 			// Act
-			var message = await this.Client.TryReceiveMessage();
+			var message = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(message, "A message should have been found in the queue.");
 
@@ -96,7 +96,7 @@ namespace Grammophone.Queueing.Tests
 			// Assert
 			Assert.IsTrue(abandoned, "Abandon should succeed.");
 
-			var nextMessage = await this.Client.TryReceiveMessage();
+			var nextMessage = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(nextMessage, "Message should be available again after abandon.");
 
@@ -112,13 +112,13 @@ namespace Grammophone.Queueing.Tests
 			await this.Client.SendMessageAsync("Timeout test");
 
 			// Act
-			var message = await this.Client.TryReceiveMessage();
+			var message = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(message, "A message should have been found in the queue.");
 
 			await Task.Delay(1500); // Wait beyond typical short timeout (e.g., 1s)
 
-			var reappearedMessage = await this.Client.TryReceiveMessage();
+			var reappearedMessage = await this.Client.TryReceiveMessageAsync();
 
 			Assert.IsNotNull(reappearedMessage, "Message should reappear after timeout.");
 
