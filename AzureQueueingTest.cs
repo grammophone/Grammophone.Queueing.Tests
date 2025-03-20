@@ -12,6 +12,7 @@ namespace Grammophone.Queueing.Tests
 	{
 		private const string ConnectionString = "UseDevelopmentStorage=true";
 		private const string QueueName = "testqueue"; // Azure queues are lowercase
+		private const QueueClientOptions.ServiceVersion AzureServiceVersion = QueueClientOptions.ServiceVersion.V2025_01_05;
 		private static Process? azuriteProcess;
 
 		[ClassInitialize]
@@ -101,12 +102,13 @@ namespace Grammophone.Queueing.Tests
 					ConnectionString,
 					QueueName,
 					visibilityTimeout: TimeSpan.FromSeconds(1),
-					timeToLive: TimeSpan.FromDays(7));
+					timeToLive: TimeSpan.FromDays(7),
+					AzureServiceVersion);
 		}
 
 		private static QueueClient CreateAzureQueueClient()
 		{
-			var queueClientOptions = new QueueClientOptions(QueueClientOptions.ServiceVersion.V2025_01_05)
+			var queueClientOptions = new QueueClientOptions(AzureServiceVersion)
 			{
 			};
 
